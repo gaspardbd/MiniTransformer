@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+venv/
+
+# Data and artifacts
+*.txt
+*.json
+*.csv
+*.pt
+*.pth
+*.bin
+generated_text.txt
+generated_text_old.txt
+loss_curve.png
+
+# OS files
+.DS_Store
+Thumbs.db
+
+generated_text.txt
+
+
+
+
