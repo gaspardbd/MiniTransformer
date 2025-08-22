@@ -1,17 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 """
-Générateur simple de corpus mixte poésie + prose en français
-avec Qwen/Qwen2.5-7B-Instruct-1M.
-
-- Sortie: un .txt simple, avec un échantillon par bloc, séparé par une ligne vide.
-- Pas de thèmes imposés: le modèle varie librement.
-- Robuste: écriture incrémentale sur disque, reprise possible par --resume.
-- Efficace: génération en batch, device_map="auto".
-- Option 4bit si VRAM limitée.
-
-Exemples:
   python generate_data.py --out data_mix.txt --samples 5000 --batch 8
   python generate_data.py --out data_mix.txt --samples 20000 --batch 6 --max-new-tokens 220 --quantize 4bit
 """
@@ -87,14 +74,14 @@ def load_model(quantize: str):
 
 # Prompts minimalistes, sans thèmes, juste le genre
 POETRY_INSTRUCTIONS = [
-    "Écris un poème en français.",
-    "Compose un poème libre en français, sur un sujet précis. Pas d'explications.",
-    "Génère un poème détaillé en français, concis et évocateur. Sans commentaire.",
+    "Écris un poème en français. Donne un titre au poème.",
+    "Compose un long poème libre en français, sur un sujet précis. Pas d'explications. Donne un titre au poème.",
+    "Génère un long poème détaillé en français, concis et évocateur. Sans commentaire. Donne un titre au poème.",
 ]
 PROSE_INSTRUCTIONS = [
-    "Écris un paragraphe de prose en français, sur un sujet précis. et ne mets pas de titre.",
-    "Rédige un paragraphe de prose en français, sur un sujet détaillé.",
-    "Génère un paragraphe complet de prose en français.",
+    "Écris un long paragraphe de prose en français, sur un sujet précis. et ne mets pas de titre.",
+    "Rédige un long paragraphe de prose en français, sur un sujet détaillé.",
+    "Génère un long paragraphe complet de prose en français.",
 ]
 
 def make_batch_prompts(batch_size: int, poetry_ratio: float):
