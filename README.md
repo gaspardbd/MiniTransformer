@@ -7,9 +7,16 @@ Small decoder to generate short French fables (La Fontaine style).
 ```bash
 pip install torch matplotlib
 ```
-3. Train:
+
+3. Generate some synthetic data
 ```bash
-python train.py --data lafontaine-baudelaire.txt --device auto --gpus all
+python generate_data.py --out data_mix.txt --samples 5000 --batch 8
+
+```
+3. Train on synthetic data + lafontaine fables
+```bash
+python /shared/ssd_30T/gaspard/Mini-Transformer/train.py   --pretrain-data /shared/ssd_30T/gaspard/Mini-Transformer/data_mix.txt   --finetune-data /shared/ssd_30T/gaspard/Mini-Transformer/lafontaine-baudelaire.txt   --max-iters-pretrain 10000   --max-iters-finetune 5000   --lr-pretrain 3e-4   --lr-finetune 5e-4   --batch-size 16   --block-size 512   --eval-interval 1
+00   --eval-iters 200   --device auto   --gpus 3   --out-dir /shared/ssd_30T/gaspard/Mini-Transformer/out
 ```
 
 Common flags:
