@@ -83,7 +83,7 @@ Artifacts are saved in `out/` (`model.pt`, `config.json`, `generated_text.txt`, 
 
 ### TO DO
 - Go from character-level to token level: implement GPT tokenizer
-- Add RoPE
+- Add RoPE (to get not an absolute encoding, but a relative encoding: ⟨qi′​,kj′​⟩ would depend on (i-j))
 - Larger training on a bigger pre-training dataset
 - Implement MoE architecture
 - Use DDP for distributed training
