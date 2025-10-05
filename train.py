@@ -33,6 +33,10 @@ def parse_args():
     parser.add_argument('--n-head', type=int, default=8)
     parser.add_argument('--n-layer', type=int, default=24)
     parser.add_argument('--dropout', type=float, default=0.2)
+    parser.add_argument('--use-moe', action='store_true', help='Enable Mixture-of-Experts FFN')
+    parser.add_argument('--num-experts', type=int, default=4, help='Number of experts for MoE')
+    parser.add_argument('--use-rope', action='store_true', help='Enable RoPE in attention')
+    parser.add_argument('--use-swiglu', action='store_true', help='Use SwiGLU MLP instead of GELU MLP')
     parser.add_argument('--generate-tokens', type=int, default=2000)
     parser.add_argument('--temperature', type=float, default=0.8)
     parser.add_argument('--out-dir', type=str, default='out', help='Directory to save model and artifacts')
@@ -133,6 +137,10 @@ def main():
         n_layer=args.n_layer,
         dropout=args.dropout,
         block_size=args.block_size,
+        use_moe=args.use_moe,
+        num_experts=args.num_experts,
+        use_rope=args.use_rope,
+        use_swiglu=args.use_swiglu,
     ).to(device)
 
     use_dataparallel = device.type == 'cuda' and len(device_ids) > 1
@@ -200,6 +208,10 @@ def main():
         'n_layer': args.n_layer,
         'dropout': args.dropout,
         'block_size': args.block_size,
+        'use_moe': args.use_moe,
+        'num_experts': args.num_experts,
+        'use_rope': args.use_rope,
+        'use_swiglu': args.use_swiglu,
         'itos': [itos[i] for i in range(vocab_size)],
     }
     with open(os.path.join(args.out_dir, 'config.json'), 'w', encoding='utf-8') as cf:
