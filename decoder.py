@@ -61,8 +61,15 @@ class Head(nn.Module):
         self.value = nn.Linear(n_embd, head_size, bias=False)
         self.register_buffer('tril', torch.tril(torch.ones(block_size, block_size)))
         self.dropout = nn.Dropout(dropout)
-        self.rope_cos = rope_cos
-        self.rope_sin = rope_sin
+        # Register RoPE buffers so they move to the correct device automatically
+        if rope_cos is not None:
+            self.register_buffer('rope_cos', rope_cos)
+        else:
+            self.rope_cos = None
+        if rope_sin is not None:
+            self.register_buffer('rope_sin', rope_sin)
+        else:
+            self.rope_sin = None
 
     def forward(self, x):
         B, T, C = x.shape
